@@ -1,10 +1,5 @@
 import { useForm } from "@mantine/form";
-import {
-  Text,
-  Button,
-  PasswordInput,
-  TextInput,
-} from "@mantine/core";
+import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@src/api";
@@ -37,6 +32,17 @@ export default function Login() {
     },
   });
 
+  const getRefreshTokenFromCookie = () => {
+    const cookies = document.cookie.split("; ");
+    for (const cookie of cookies) {
+      const [name, value] = cookie.split("=");
+      if (name === "refreshToken") {
+        return value;
+      }
+    }
+    return null;
+  };
+
   const onSubmit = async (params: FormData) => {
     const payload = {
       username: params.username,
@@ -45,38 +51,24 @@ export default function Login() {
     await axiosInstance
       .post("/api/login", payload)
       .then((response) => {
-        console.log(response.data.refreshToken);
-        console.log(response.data.accessToken);
-        localStorage.setItem("acess-token", response.data.token);
         if (response.status === 200) {
-          // getUserDetails(dispatch)
-          //   .then((response: any) => {
-          //     const access: string[] = [];
-          //     response.data.role.forEach((item) => {
-          //       const role = roles.find((r) => r.role === item);
-          //       role?.pages.forEach((element) => {
-          //         access.push(element);
-          //       });
-          //     });
-          //     const default_access = roles.find(
-          //       (r) => r.role === response.data.role[0]
-          //     )?.pages[0];
-          //     navigate(`${default_access}`);
-          //   })
-          //   .catch((error: any) => {
-          //     navigate("/");
-          //   });
-          // LoginClose(event, "buttonClick");
+          const { refreshToken, accessToken } = response.data;
+
+          // Set the access token in session storage
+          sessionStorage.setItem("accessTokenFlash", accessToken);
+
+          // Set the refresh token as a cookie
+          document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
+
+          console.log("Tokens successfully stored!");
+          console.log("Access token Flash:",sessionStorage.getItem("accessTokenFlash"));
+          console.log("Refresh token:", getRefreshTokenFromCookie());
         }
       })
       .catch((error) => {
         if (error.response.status === 401 || error.response.status === 404) {
           const message = error.response.data.message;
-          // Swal.fire({
-          //   icon: "error",
-          //   title: "Invalid Username or Password!",
-          //   text: message,
-          // });
+          console.error(message);
           return;
         }
       });

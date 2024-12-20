@@ -45,7 +45,8 @@ export default function Login() {
     await axiosInstance
       .post("/api/login", payload)
       .then((response) => {
-        console.log(response)
+        console.log(response.data.refreshToken);
+        console.log(response.data.accessToken);
         localStorage.setItem("acess-token", response.data.token);
         if (response.status === 200) {
           // getUserDetails(dispatch)

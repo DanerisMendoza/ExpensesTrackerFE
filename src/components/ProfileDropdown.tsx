@@ -5,7 +5,7 @@ import {
   IconUserCircle,
   IconShieldLock,
   IconLogout,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react';
 import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { GlobalStore } from "@src/utils/GlobalStore";

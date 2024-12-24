@@ -1,19 +1,15 @@
 import { useForm } from "@mantine/form";
 import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
 import axiosInstance from "@src/api";
 import Swal from "sweetalert2";
 
 export default function Register() {
-  const navigate = useNavigate();
   interface FormData {
     username: string;
     name: string;
     email: string;
     password: string;
   }
-
-  
 
   const form = useForm({
     initialValues: { username: "", password: "", name: "", email: "" },
@@ -46,17 +42,6 @@ export default function Register() {
       },
     },
   });
-
-  const getRefreshTokenFromCookie = () => {
-    const cookies = document.cookie.split("; ");
-    for (const cookie of cookies) {
-      const [name, value] = cookie.split("=");
-      if (name === "refreshTokenFlash") {
-        return value;
-      }
-    }
-    return null;
-  };
 
   const onSubmit = async (params: FormData) => {
     console.log(params)

@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, Skeleton } from '@mantine/core';
+import { AppShell } from '@mantine/core';
 import Header from './Header';
 import Main from "./Main";
 import Navbar from './Navbar';
@@ -47,8 +47,6 @@ function Layout() {
         padding="md"
       >
         <Header
-          mobileOpened={mobileOpened}
-          desktopOpened={desktopOpened}
           toggleMobile={toggleMobile}
           toggleDesktop={toggleDesktop}
         />

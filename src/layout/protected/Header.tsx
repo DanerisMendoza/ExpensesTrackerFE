@@ -1,14 +1,12 @@
-import { AppShell, Burger, Group } from "@mantine/core";
+import { AppShell, Group } from "@mantine/core";
 import { ProfileDropdown } from "@src/components/ProfileDropdown";
 import { GlobalStore } from '@src/utils/GlobalStore';
 interface HeaderProps {
-  mobileOpened: boolean;
-  desktopOpened: boolean;
   toggleMobile: () => void;
   toggleDesktop: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ mobileOpened, desktopOpened, toggleMobile, toggleDesktop }) => {
+const Header: React.FC<HeaderProps> = ({  toggleMobile, toggleDesktop }) => {
   const { is_mobile } = GlobalStore()
   return (
     <AppShell.Header>

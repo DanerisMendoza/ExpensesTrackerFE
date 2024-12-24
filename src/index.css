@@ -131,9 +131,16 @@ body {
 }
 
 .mantine-AppShell-main {
-  @apply bg-[#E6F2FC] relative w-full;
+  @apply bg-gray-100 relative w-full;
 }
 
 .mantine-AppShell-navbar {
   @apply h-screen;
+}
+
+.active{
+  @apply pl-5  bg-black p-1 rounded-lg text-white cursor-pointer;
+}
+.inactive{
+  @apply pl-5 p-1 rounded-lg text-black bg-slate-200 cursor-pointer;
 }

@@ -1,3 +1,4 @@
+import getRefreshTokenFromCookie from "@src/utils/Auth";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -18,17 +19,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Function to get the refresh token from cookies
-const getRefreshTokenFromCookie = () => {
-  const cookies = document.cookie.split("; ");
-  for (const cookie of cookies) {
-    const [name, value] = cookie.split("=");
-    if (name === "refreshTokenFlash") {
-      return value;
-    }
-  }
-  return null;
-};
 
 // Response interceptor to handle token expiration (401) and refresh the access token
 axiosInstance.interceptors.response.use(

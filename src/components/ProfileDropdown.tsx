@@ -8,9 +8,11 @@ import {
 } from "@tabler/icons-react";
 import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
+import { GlobalStore } from "@src/utils/GlobalStore";
 
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
+  const { user_details, is_mobile } = GlobalStore()
   return (
     <Menu
       shadow="md"
@@ -19,16 +21,21 @@ export const ProfileDropdown = () => {
       radius={10}
       transitionProps={{ transition: "fade-down", duration: 100 }}
     >
-      <Menu.Target>
-        <Avatar
-          src={avatar}
-          alt="it's me"
-          className="cursor-pointer"
-          size="lg"
-        />
-      </Menu.Target>
 
-      <Menu.Dropdown className="pt-5 pb-2 px-2">
+      <div className="flex text-center items-center">
+
+        {!is_mobile && (user_details.name.split(' ')[0])}
+        <Menu.Target>
+          <Avatar
+            src={avatar}
+            alt="it's me"
+            className="cursor-pointer"
+            size="lg"
+          />
+        </Menu.Target>
+      </div>
+
+      <Menu.Dropdown className="pt-1 pb-2 px-2">
         <Flex
           mih={50}
           justify="center"
@@ -36,8 +43,8 @@ export const ProfileDropdown = () => {
           direction="column"
           wrap="wrap"
         >
-          <p className="custom-gradient bg-clip-text text-transparent font-semibold poppins text-2xl">
-            Welcome, User!
+          <p className="font-semibold text-xl">
+            {user_details.name}
           </p>
         </Flex>
         <Menu.Item
@@ -73,6 +80,7 @@ export const ProfileDropdown = () => {
           }
           onClick={() => {
             sessionStorage.setItem("accessTokenFlash", '');
+            document.cookie = "refreshTokenFlash=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
             navigate("/login");
           }}
         >

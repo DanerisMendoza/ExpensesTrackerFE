@@ -3,11 +3,12 @@ import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@src/api";
-import { CredentialStore } from "@src/CredentialStore";
-import  {jwtDecode}  from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import { GlobalStore } from '@src/utils/GlobalStore'
 
 export default function Login() {
   const navigate = useNavigate();
+  const { set_user_details } = GlobalStore()
   interface FormData {
     username: string;
     password: string;
@@ -55,18 +56,8 @@ export default function Login() {
       .then((response) => {
         if (response.status === 200) {
           const { refreshToken, accessToken } = response.data;
-
-          // Set the access token in session storage
           sessionStorage.setItem("accessTokenFlash", accessToken);
-
-          // Set the refresh token as a cookie
           document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
-
-          const decodedToken = jwtDecode(accessToken);
-          console.log("Tokens successfully stored!");
-          console.log('decode', decodedToken)
-          console.log("Access token Flash:",sessionStorage.getItem("accessTokenFlash"));
-          console.log("Refresh token:", getRefreshTokenFromCookie());
           navigate("/dashboard");
         }
       })

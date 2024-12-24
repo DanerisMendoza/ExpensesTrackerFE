@@ -1,34 +1,50 @@
 import { createBrowserRouter } from "react-router-dom";
 
-//--- Layout Modules
+// Layout 
+import ProtectedLayout from "@src/layout/protected/Layout";
+import PublicLayout from "@src/layout/public/Layout";
+// Modules
 import Login from "@modules/Login";
 import Dashboard from "@modules/Dashboard";
-import Root from "@src/layout/Root";
+import LandingPage from "@src/modules/LandingPage";
+import Register from "@src/modules/Register";
 
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
+  // Public routes
   {
     path: "/",
-    element: <Root />,
+    element: <PublicLayout />,
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <LandingPage />,
       },
       {
-        index: true,
-        path:'dashboard',
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
+      },
+    ],
+  },
+  // Protected routes
+  {
+    element: <ProtectedLayout />, 
+    children: [
+      {
+        path: "dashboard",
         element: <Dashboard />,
       },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-    errorElement: <div>NotFound</div>,
-  },
+  // Not found
   {
     path: "*",
     element: <div>404 Not Found</div>,
   },
 ]);
+
+export default router

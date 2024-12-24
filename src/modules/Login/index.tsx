@@ -3,6 +3,8 @@ import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@src/api";
+import { CredentialStore } from "@src/CredentialStore";
+import  {jwtDecode}  from 'jwt-decode';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ export default function Login() {
     const cookies = document.cookie.split("; ");
     for (const cookie of cookies) {
       const [name, value] = cookie.split("=");
-      if (name === "refreshToken") {
+      if (name === "refreshTokenFlash") {
         return value;
       }
     }
@@ -60,9 +62,12 @@ export default function Login() {
           // Set the refresh token as a cookie
           document.cookie = `refreshTokenFlash=${refreshToken}; path=/; secure; SameSite=Strict`;
 
+          const decodedToken = jwtDecode(accessToken);
           console.log("Tokens successfully stored!");
+          console.log('decode', decodedToken)
           console.log("Access token Flash:",sessionStorage.getItem("accessTokenFlash"));
           console.log("Refresh token:", getRefreshTokenFromCookie());
+          navigate("/dashboard");
         }
       })
       .catch((error) => {
@@ -125,9 +130,6 @@ export default function Login() {
             <Button type="submit" className="border-none bg-blue-300 mt-7">
               <Text
                 className="poppins text-white "
-                // onClick={() => {
-                //   navigate("/");
-                // }}
               >
                 Login Now
               </Text>

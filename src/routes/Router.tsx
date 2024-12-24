@@ -1,4 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
+import React from "react";
 
 // Layout 
 import ProtectedLayout from "@src/layout/protected/Layout";
@@ -9,34 +10,57 @@ import Dashboard from "@modules/Dashboard";
 import LandingPage from "@src/modules/LandingPage";
 import Register from "@src/modules/Register";
 
+// Mock authentication function
+const isAuthenticated = () => {
+  return Boolean(sessionStorage.getItem("accessTokenFlash"));
+};
+
+// Authentication wrapper
+const RequireAuth: React.FC = () => {
+  return isAuthenticated() ? <Outlet /> : <Navigate to="/login" replace />;
+};
+
+// Redirect wrapper for public routes
+const RedirectIfAuthenticated: React.FC = () => {
+  return isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Outlet />;
+};
 
 const router = createBrowserRouter([
   // Public routes
   {
-    path: "/",
-    element: <PublicLayout />,
+    element: <RedirectIfAuthenticated />,
     children: [
       {
-        index: true,
-        element: <LandingPage />,
-      },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'register',
-        element: <Register />,
-      },
+        element: <PublicLayout />,
+        children: [
+          {
+            index: true,
+            element: <LandingPage />,
+          },
+          {
+            path: "login",
+            element: <Login />,
+          },
+          {
+            path: "register",
+            element: <Register />,
+          },
+        ],
+      }
     ],
   },
   // Protected routes
   {
-    element: <ProtectedLayout />, 
+    element: <RequireAuth />,
     children: [
       {
-        path: "dashboard",
-        element: <Dashboard />,
+        element: <ProtectedLayout />,
+        children: [
+          {
+            path: "dashboard",
+            element: <Dashboard />,
+          },
+        ],
       },
     ],
   },
@@ -47,4 +71,4 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router
+export default router;

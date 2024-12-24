@@ -72,6 +72,7 @@ export const ProfileDropdown = () => {
             <IconLogout style={{ width: rem(20), height: rem(20) }} />
           }
           onClick={() => {
+            sessionStorage.setItem("accessTokenFlash", '');
             navigate("/login");
           }}
         >

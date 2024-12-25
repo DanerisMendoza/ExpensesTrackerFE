@@ -8,11 +8,11 @@ import {
 } from '@tabler/icons-react';
 import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
-import { GlobalStore } from "@src/utils/GlobalStore";
+import { GlobalStore, user_details_value } from "@src/utils/GlobalStore";
 
 export const ProfileDropdown = () => {
   const navigate = useNavigate();
-  const { user_details, is_mobile } = GlobalStore()
+  const { user_details, is_mobile, set_user_details } = GlobalStore()
   return (
     <Menu
       shadow="md"
@@ -81,6 +81,7 @@ export const ProfileDropdown = () => {
           onClick={() => {
             sessionStorage.setItem("accessTokenFlash", '');
             document.cookie = "refreshTokenFlash=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
+            set_user_details(user_details_value)
             navigate("/login");
           }}
         >

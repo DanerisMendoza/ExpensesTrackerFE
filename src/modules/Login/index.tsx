@@ -52,7 +52,7 @@ export default function Login() {
         const message = error.response.data.message;
         Swal.fire({
           icon: "error",
-          title: "Registration failed",
+          title: "Login failed",
           text: message,
         });
       });

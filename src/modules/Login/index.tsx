@@ -3,6 +3,7 @@ import { Text, Button, PasswordInput, TextInput } from "@mantine/core";
 import { IconMail, IconShieldLock } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@src/api";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,11 +49,12 @@ export default function Login() {
         }
       })
       .catch((error) => {
-        if (error.response.status === 401 || error.response.status === 404) {
-          const message = error.response.data.message;
-          console.error(message);
-          return;
-        }
+        const message = error.response.data.message;
+        Swal.fire({
+          icon: "error",
+          title: "Registration failed",
+          text: message,
+        });
       });
   };
 

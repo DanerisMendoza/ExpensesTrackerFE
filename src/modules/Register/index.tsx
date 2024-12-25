@@ -24,7 +24,7 @@ export default function Register() {
       email: (value: string) => {
         if (value.length <= 0) {
           return "email can not be empty";
-        } 
+        }
       },
       name: (value: string) => {
         if (value.length <= 0) {
@@ -55,22 +55,22 @@ export default function Register() {
     await axiosInstance
       .post("/api/createUser", payload)
       .then((response) => {
-        console.log('status: ',response.status)
+        console.log('status: ', response.status)
         if (response.status === 201) {
           console.log("Before reset: ", form.values);
           form.reset();
           console.log("After reset: ", form.values);
           setTimeout(() => {
             Swal.fire({
-                icon: "success",
-                title: "Success!",
-                text: "Registration successful!",
+              icon: "success",
+              title: "Success!",
+              text: "Registration successful!",
             });
-        }, 1000);
+          }, 1000);
         }
       })
       .catch((error) => {
-        console.log('err: ',error.response.status)
+        console.log('err: ', error.response.status)
         if (error.response.status === 401 || error.response.status === 404) {
           const message = error.response.data.message;
           console.error(message);
@@ -82,7 +82,7 @@ export default function Register() {
             icon: "error",
             title: "Registration failed",
             text: message,
-        });
+          });
         }
       });
   };

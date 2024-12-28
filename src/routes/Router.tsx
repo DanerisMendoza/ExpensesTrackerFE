@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import React from "react";
 import { jwtDecode } from 'jwt-decode';
 import { GlobalStore, user_details_value } from "@src/utils/GlobalStore";
-import getRefreshTokenFromCookie from "@src/utils/Auth";
+import { getRefreshTokenFromCookie } from "@src/utils/Auth";
 import axiosInstance from "@src/api";
 
 // Layout 
@@ -25,7 +25,7 @@ const isAuthenticated = () => {
     if (!user_details.name) {
       set_user_details(decodedToken);
     }
-    const expirationTime = (decodedToken as any).exp * 1000; 
+    const expirationTime = (decodedToken as any).exp * 1000;
     const currentTime = Date.now();
     if (currentTime > expirationTime) {
       sessionStorage.removeItem("accessTokenFlash");

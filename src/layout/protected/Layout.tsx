@@ -3,8 +3,6 @@ import Header from './Header';
 import Main from "./Main";
 import Navbar from './Navbar';
 import { useDisclosure } from '@mantine/hooks';
-import { MantineProvider } from "@mantine/core";
-import { theme } from "@src/theme";
 import { useEffect } from 'react';
 import { GlobalStore } from '@src/utils/GlobalStore';
 
@@ -35,8 +33,6 @@ function Layout() {
   }, []);
 
   return (
-    <MantineProvider theme={theme}>
-
       <AppShell
         header={{ height: 60 }}
         navbar={{
@@ -53,7 +49,6 @@ function Layout() {
         <Navbar/>
         <Main />
       </AppShell>
-    </MantineProvider>
   );
 }
 

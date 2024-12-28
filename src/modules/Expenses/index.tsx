@@ -1,9 +1,8 @@
-import DataTableComp from "@src/components/DataTable";
+import DataTableComp from "@src/modules/Expenses/components/DataTable";
 
 export const Expenses = () => {
   return (
-    <div>
-      <h1>Expenses</h1>
+    <div className=" flex flex-col gap-12 sm:gap-4">
       <DataTableComp/>
     </div>
   );

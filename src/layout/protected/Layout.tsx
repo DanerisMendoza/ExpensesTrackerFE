@@ -33,22 +33,22 @@ function Layout() {
   }, []);
 
   return (
-      <AppShell
-        header={{ height: 60 }}
-        navbar={{
-          width: 250,
-          breakpoint: 'sm',
-          collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-        }}
-        padding="md"
-      >
-        <Header
-          toggleMobile={toggleMobile}
-          toggleDesktop={toggleDesktop}
-        />
-        <Navbar/>
-        <Main />
-      </AppShell>
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: 250,
+        breakpoint: 'sm',
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+      }}
+      padding="md"
+    >
+      <Header
+        toggleMobile={toggleMobile}
+        toggleDesktop={toggleDesktop}
+      />
+      <Navbar toggleMobile={toggleMobile} />
+      <Main />
+    </AppShell>
   );
 }
 

@@ -42,12 +42,14 @@ function Layout() {
       }}
       padding="md"
     >
-      <Header
-        toggleMobile={toggleMobile}
-        toggleDesktop={toggleDesktop}
-      />
-      <Navbar toggleMobile={toggleMobile} />
-      <Main />
+      <div className='h-screen-100'>
+        <Header
+          toggleMobile={toggleMobile}
+          toggleDesktop={toggleDesktop}
+        />
+        <Navbar toggleMobile={toggleMobile} />
+        <Main />
+      </div>
     </AppShell>
   );
 }

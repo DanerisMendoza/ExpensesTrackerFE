@@ -24,7 +24,7 @@ export const ProfileDropdown = () => {
 
       <div className="flex text-center items-center">
 
-        {!is_mobile && (user_details.name.split(' ')[0])}
+        {!is_mobile && !!user_details.name && (user_details.name.split(' ')[0])}
         <Menu.Target>
           <Avatar
             src={avatar}

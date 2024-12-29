@@ -11,6 +11,7 @@ export default defineConfig({
             "@components": path.resolve(__dirname, "src/components"),
             "@src": path.resolve(__dirname, "src"),
             "@assets": path.resolve(__dirname, "src/assets"),
+            '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
         },
     },
     server: {

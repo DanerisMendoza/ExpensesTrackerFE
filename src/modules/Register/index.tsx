@@ -99,7 +99,7 @@ export default function Register() {
               className="text-center font-bold poppins mt-6"
               style={{ color: "#559CDA" }}
             >
-              Create Account
+              Create your account.
             </Text>
             <div className="w-full text-start text-slate-700 mt-6">
               <Text size="md" className="poppins">

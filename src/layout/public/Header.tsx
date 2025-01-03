@@ -5,7 +5,7 @@ export default function Header({ }: {}) {
   return (
     <AppShell.Header>
       <div className=" w-full flex items-center justify-between ml-2">
-        <p className="cursor-pointer" onClick={()=>navigate("/")}>LOGO</p>
+        <p className="cursor-pointer" onClick={()=>navigate("/landing")}>LOGO</p>
         <div className="flex gap-4 p-2">
           <p className="cursor-pointer"  onClick={()=>navigate("/login")}>Login</p>
           <p>|</p>

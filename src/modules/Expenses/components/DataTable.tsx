@@ -1,89 +1,103 @@
 import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
-import sortBy from 'lodash/sortBy';
 import { useEffect, useState } from 'react';
-import 'mantine-datatable/styles.layer.css';
 import axiosInstance from "@src/api";
 import Swal from 'sweetalert2';
+import 'mantine-datatable/styles.layer.css';
 
-type Company = {
-  _id: number;
+type Expenses = {
+  _id: string;
   title: string;
+  user_id: string;
   amount: number;
+  spent_at: Date;
+  updatedAt: Date;
+  createdAt: Date;
 };
 
 const PAGE_SIZES = [10, 15, 20];
 
-export default function DataTableComp() {
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Company>>({
-    columnAccessor: 'title',
-    direction: 'asc',
+export default function DataTableComp({ search, refreshData }: { search: string, refreshData: boolean }) {
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Expenses>>({
+    columnAccessor: 'createdAt', // Default sorting by createdAt (latest first)
+    direction: 'desc',
   });
 
-  const [response, setResponse] = useState([{ _id: 1, title: '', amount: 0 }])
-  const [records, setRecords] = useState(() => sortBy(response, 'title'));
+  const [records, setRecords] = useState<Expenses[]>([]);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize;
-  }, [page, pageSize]);
-
-  useEffect(() => {
-    const sortedData = sortBy(response, sortStatus.columnAccessor) as Company[];
-    setRecords(sortStatus.direction === 'desc' ? sortedData.reverse() : sortedData);
-  }, [sortStatus]);
-
-  useEffect(() => {
+  // Function to fetch data from the API
+  const fetchData = () => {
     axiosInstance
-      .get("/api/getAllExpenses/me")
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data)
-          setResponse(response.data)
-          setRecords(response.data)
+      .get('/api/getAllExpenses/me', {
+        params: {
+          page,
+          limit: pageSize,
+          search, // Include search in query
+          sortBy: sortStatus.columnAccessor,
+          sortDirection: sortStatus.direction,
+        },
+      })
+      .then((res) => {
+        console.log("API Response:", res);
+        const { data, totalExpenses } = res.data;
+        if (res.status === 200 && Array.isArray(data)) {
+          setRecords(data); // Set fetched records
+          setTotalRecords(totalExpenses); // Set total record count
+        } else {
+          console.error("Unexpected response format:", res.data);
         }
       })
       .catch((error) => {
-        const message = error.response.data.message;
+        const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
+        console.error("Error fetching data:", error.response || error);
         Swal.fire({
           icon: "error",
           text: message,
         });
       });
-  }, [])
+  };
 
+  // Fetch data when page, pageSize, search, or sortStatus change
+  useEffect(() => {
+    fetchData();
+  }, [page, pageSize, sortStatus, search, refreshData,]);
 
   return (
-      <DataTable
-        idAccessor="_id"
-        records={records}
-        columns={[
-          { accessor: 'title', title: 'Title', textAlign: 'center', sortable: true },
-          { accessor: 'amount', title: 'Amount', textAlign: 'center', sortable: true },
-        ]}
-        paginationText={({ from, to, totalRecords }) =>
-          `Showing data ${from} out ${to} of ${totalRecords} entries (0.225) seconds`
-        }
-        className='p-4'
-        styles={{
-          header: {
-            color: "rgba(109, 109, 109, 0.6)",
-            fontWeight: 500,
-          },
-          root: {
-            color: "rgba(0, 0, 0, 0.6)",
-          },
-        }}
-        sortStatus={sortStatus}
-        onSortStatusChange={setSortStatus}
-        totalRecords={records.length}
-        paginationActiveBackgroundColor="grape"
-        recordsPerPage={pageSize}
-        page={page}
-        onPageChange={(p) => setPage(p)}
-        recordsPerPageOptions={PAGE_SIZES}
-        onRecordsPerPageChange={setPageSize}
-      />
+    <DataTable
+      idAccessor="_id"
+      records={records}
+      columns={[
+        { accessor: '_id', title: 'ID', textAlign: 'center', sortable: true },
+        { accessor: 'title', title: 'Title', textAlign: 'center', sortable: true },
+        { accessor: 'amount', title: 'Amount', textAlign: 'center', sortable: true, },
+        { accessor: 'spent_at', title: 'Spent At', textAlign: 'center', sortable: true },
+        { accessor: 'updatedAt', title: 'Updated At', textAlign: 'center', sortable: true },
+        { accessor: 'createdAt', title: 'Created At', textAlign: 'center', sortable: true },
+      ]}
+      paginationText={({ from, to, totalRecords }) =>
+        `Showing data ${from} to ${to} of ${totalRecords} entries`
+      }
+      className="p-4"
+      styles={{
+        header: {
+          color: "rgba(109, 109, 109, 0.6)",
+          fontWeight: 500,
+        },
+        root: {
+          color: "rgba(0, 0, 0, 0.6)",
+        },
+      }}
+      sortStatus={sortStatus}
+      onSortStatusChange={setSortStatus}
+      totalRecords={totalRecords}
+      paginationActiveBackgroundColor="grape"
+      recordsPerPage={pageSize}
+      page={page}
+      onPageChange={setPage}
+      recordsPerPageOptions={PAGE_SIZES}
+      onRecordsPerPageChange={setPageSize}
+    />
   );
 }

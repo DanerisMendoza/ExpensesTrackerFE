@@ -14,7 +14,7 @@ export default function Login() {
 
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { username: "", password: "" },
+    initialValues: { username: "admin", password: "12345678" },
     validate: {
       username: (value: string) => {
         if (value.length <= 0) {

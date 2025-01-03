@@ -81,7 +81,11 @@ const router = createBrowserRouter([
         element: <PublicLayout />,
         children: [
           {
-            index: true,
+            path: "",
+            element: <Navigate to="/login" replace />, 
+          },
+          {
+            path: "landing",
             element: <LandingPage />,
           },
           {

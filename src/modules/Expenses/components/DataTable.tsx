@@ -108,14 +108,6 @@ export default function DataTable() {
           render: (record) => dayjs(record.spent_at).format('MMMM D, YYYY'),
         },
         {
-          accessor: 'updatedAt', title: 'Updated At', textAlign: 'left', sortable: true,
-          render: (record) => dayjs(record.updatedAt).format('MMMM D, YYYY'),
-        },
-        {
-          accessor: 'createdAt', title: 'Created At', textAlign: 'left', sortable: true,
-          render: (record) => dayjs(record.createdAt).format('MMMM D, YYYY'),
-        },
-        {
           accessor: 'actions', title: 'Actions', textAlign: 'left',
           render: (record) => (
             <div style={{ display: 'flex', justifyContent: 'left', gap: '10px' }}>

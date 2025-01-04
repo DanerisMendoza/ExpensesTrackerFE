@@ -34,7 +34,6 @@ export default function Dialog() {
             title: params.title,
             amount: params.amount,
         };
-        console.log('action222: ', action)
         if (action == 'New') {
             await axiosInstance
                 .post("createExpenses", payload)

@@ -13,24 +13,18 @@ function Layout() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        set_is_mobile(true);
-      } else {
-        set_is_mobile(false);
-      }
+      const isMobile = window.innerWidth <= 768;
+      set_is_mobile(isMobile);
     };
-
-    // Set initial value
-    handleResize();
-
-    // Add event listener to track resize
+  
+    handleResize(); // Set the initial value
     window.addEventListener('resize', handleResize);
-
-    // Clean up event listener on component unmount
+  
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [set_is_mobile]); // Make sure `set_is_mobile` is stable
+  
 
   return (
     <AppShell

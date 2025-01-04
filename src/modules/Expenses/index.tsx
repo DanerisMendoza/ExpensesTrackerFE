@@ -5,38 +5,46 @@ import { IconSearch } from '@tabler/icons-react';
 import ExpensesDialog from "./components/ExpensesDialog";
 
 export const Expenses = () => {
-  const [search, setSearch] = useState<string>(''); 
-  const [action, setAction] = useState<string>(''); 
-  const [searchQuery, setSearchQuery] = useState<string>(''); 
-  const [refreshData, setRefreshData] = useState<boolean>(false); 
+  const [search, setSearch] = useState<string>('');
+  const [action, setAction] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [refreshData, setRefreshData] = useState<boolean>(false);
 
   const handleSearch = () => {
-    setSearchQuery(search); 
+    setSearchQuery(search);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleSearch(); 
+      handleSearch();
     }
   };
 
   const handleRefreshData = () => {
-    setRefreshData(true); 
+    setRefreshData(true);
   };
 
   return (
     <div className="flex flex-col gap-4 sm:gap-4 h-full">
       <div className='flex flex-col sm:flex-row justify-between gap-4 sm:gap-2'>
-        <Button radius="md" color="black" onClick={() => setAction('NewExpenses')}>
-          Add Expenses
-        </Button>
+        <div className='flex gap-2'>
+          <Button radius="md" color="blue" onClick={() => setAction('NewExpenses')}>
+            + Add Expenses
+          </Button>
+          <Button radius="md" color="green" >
+            Export Excel
+          </Button>
+          <Button radius="md" color="red" >
+            Export PDF
+          </Button>
+        </div>
         <TextInput
           className='w-full sm:w-1/6 self-end'
           placeholder="Search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={handleKeyPress}
-          rightSection={<IconSearch onClick={handleSearch} />} 
+          rightSection={<IconSearch onClick={handleSearch} />}
         />
       </div>
 

@@ -8,7 +8,7 @@ export default function App() {
   
   // url profiler
   let previousUrl = '';
-  const observer = new MutationObserver(function (mutations) {
+  const observer = new MutationObserver(function () {
     if (location.href !== previousUrl) {
       previousUrl = location.href;
       console.log(`URL changed to ${location.href}`);

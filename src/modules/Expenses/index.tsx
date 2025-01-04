@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button, TextInput } from '@mantine/core';
 import { IconSearch, IconFileTypePdf, IconFileTypeXls } from '@tabler/icons-react';
 import DataTable from "@src/modules/Expenses/components/DataTable";

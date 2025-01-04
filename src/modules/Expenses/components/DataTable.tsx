@@ -1,4 +1,4 @@
-import { DataTable, type DataTableSortStatus } from 'mantine-datatable';
+import { DataTable as MantineDataTable, type DataTableSortStatus } from 'mantine-datatable';
 import { useEffect, useState } from 'react';
 import axiosInstance from "@src/api";
 import Swal from 'sweetalert2';
@@ -21,7 +21,7 @@ type Expenses = {
 
 const PAGE_SIZES = [10, 15, 20];
 
-export default function DataTableComp({ search, refreshData }: { search: string; refreshData: boolean }) {
+export default function DataTable({ search, refreshData }: { search: string; refreshData: boolean }) {
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Expenses>>({
     columnAccessor: 'createdAt',
     direction: 'desc',
@@ -104,40 +104,40 @@ export default function DataTableComp({ search, refreshData }: { search: string;
 
 
   return (
-    <DataTable
+    <MantineDataTable
       idAccessor="_id"
       records={records}
       columns={[
-        { accessor: '_id', title: 'ID', textAlign: 'center', sortable: true },
-        { accessor: 'title', title: 'Title', textAlign: 'center', sortable: true },
-        { accessor: 'amount', title: 'Amount', textAlign: 'center', sortable: true },
+        { accessor: '_id', title: 'ID', textAlign: 'left', sortable: true },
+        { accessor: 'title', title: 'Title', textAlign: 'left', sortable: true },
+        { accessor: 'amount', title: 'Amount', textAlign: 'left', sortable: true },
         {
           accessor: 'spent_at',
           title: 'Spent At',
-          textAlign: 'center',
+          textAlign: 'left',
           sortable: true,
           render: (record) => dayjs(record.spent_at).format('MMMM D, YYYY'),
         },
         {
           accessor: 'updatedAt',
           title: 'Updated At',
-          textAlign: 'center',
+          textAlign: 'left',
           sortable: true,
           render: (record) => dayjs(record.updatedAt).format('MMMM D, YYYY'),
         },
         {
           accessor: 'createdAt',
           title: 'Created At',
-          textAlign: 'center',
+          textAlign: 'left',
           sortable: true,
           render: (record) => dayjs(record.createdAt).format('MMMM D, YYYY'),
         },
         {
           accessor: 'actions',
           title: 'Actions',
-          textAlign: 'center',
+          textAlign: 'left',
           render: (record) => (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'left', gap: '10px' }}>
               <IconPencil
                 size={20}
                 style={{ cursor: 'pointer', color: '#007bff' }}

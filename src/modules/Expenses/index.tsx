@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DataTableComp from "@src/modules/Expenses/components/DataTable";
+import DataTable from "@src/modules/Expenses/components/DataTable";
 import { Button, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import ExpensesDialog from "./components/ExpensesDialog";
@@ -48,7 +48,7 @@ export const Expenses = () => {
         />
       </div>
 
-      <DataTableComp search={searchQuery} refreshData={refreshData} />
+      <DataTable search={searchQuery} refreshData={refreshData} />
 
       <ExpensesDialog onDialogClose={handleRefreshData} action={action} setAction={setAction} />
     </div>

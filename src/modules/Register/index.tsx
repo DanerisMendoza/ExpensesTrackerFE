@@ -53,7 +53,7 @@ export default function Register() {
 
     };
     await axiosInstance
-      .post("/api/createUser", payload)
+      .post("createUser", payload)
       .then((response) => {
         console.log('status: ', response.status)
         if (response.status === 201) {

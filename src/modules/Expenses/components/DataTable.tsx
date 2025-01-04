@@ -35,7 +35,7 @@ export default function DataTableComp({ search, refreshData }: { search: string;
   // Function to fetch data from the API
   const fetchData = () => {
     axiosInstance
-      .get('/api/getAllExpenses/me', {
+      .get('getAllExpenses/me', {
         params: {
           page,
           limit: pageSize,
@@ -86,7 +86,7 @@ export default function DataTableComp({ search, refreshData }: { search: string;
     }).then((result) => {
       if (result.isConfirmed) {
         axiosInstance
-          .delete(`/api/deleteExpenseById/${id}`)
+          .delete(`deleteExpenseById/${id}`)
           .then((response) => {
             if (response.status === 200) {
               Swal.fire("Deleted!", response.data.message, "success");

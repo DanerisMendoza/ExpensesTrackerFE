@@ -40,7 +40,7 @@ const isAuthenticated = () => {
     };
     (async () => {
       await axiosInstance
-        .post("/api/refreshToken", payload)
+        .post("refreshToken", payload)
         .then((response) => {
           if (response.status === 200) {
             const { accessToken } = response.data;

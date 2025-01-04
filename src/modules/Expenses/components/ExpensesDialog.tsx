@@ -34,7 +34,7 @@ export default function ExpensesDialog({ onDialogClose, action, setAction }: { o
         };
 
         await axiosInstance
-            .post("/api/createExpenses", payload)
+            .post("createExpenses", payload)
             .then((response) => {
                 if (response.status === 200) {
                     setAction('');

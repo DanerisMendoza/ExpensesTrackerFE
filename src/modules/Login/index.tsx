@@ -39,7 +39,7 @@ export default function Login() {
       password: params.password,
     };
     await axiosInstance
-      .post("/api/login", payload)
+      .post("login", payload)
       .then((response) => {
         if (response.status === 200) {
           const { refreshToken, accessToken } = response.data;

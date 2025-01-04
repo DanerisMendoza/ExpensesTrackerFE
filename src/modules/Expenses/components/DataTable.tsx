@@ -1,38 +1,26 @@
-import { DataTable as MantineDataTable, type DataTableSortStatus } from 'mantine-datatable';
-import { useEffect, useState } from 'react';
+import { DataTable as MantineDataTable } from 'mantine-datatable';
+import { useEffect } from 'react';
 import axiosInstance from "@src/api";
 import Swal from 'sweetalert2';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { IconPencil, IconTrash } from '@tabler/icons-react'; // Import Tabler icons
+import { IconPencil, IconTrash } from '@tabler/icons-react';
 import 'mantine-datatable/styles.layer.css';
+import { Expenses } from '@src/modules/Expenses/types';
+import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 
 dayjs.extend(localizedFormat);
-
-type Expenses = {
-  _id: string;
-  title: string;
-  user_id: string;
-  amount: number;
-  spent_at: Date;
-  updatedAt: Date;
-  createdAt: Date;
-};
-
 const PAGE_SIZES = [10, 15, 20];
 
-export default function DataTable({ search, refreshData }: { search: string; refreshData: boolean }) {
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Expenses>>({
-    columnAccessor: 'createdAt',
-    direction: 'desc',
-  });
+export default function DataTable() {
 
-  const [records, setRecords] = useState<Expenses[]>([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-  const [page, setPage] = useState(1);
+  const { setAction, setSelectedData } = DialogStore()
+  
+  const {
+    search, records, totalRecords, page, pageSize, sortStatus, refresh,
+    setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh
+  } = DataTableStore();
 
-  // Function to fetch data from the API
   const fetchData = () => {
     axiosInstance
       .get('getAllExpenses/me', {
@@ -63,15 +51,16 @@ export default function DataTable({ search, refreshData }: { search: string; ref
       });
   };
 
-  // Fetch data when page, pageSize, search, or sortStatus change
   useEffect(() => {
     fetchData();
-  }, [page, pageSize, sortStatus, search, refreshData]);
+    return(
+      setRefresh(false)
+    )
+  }, [page, pageSize, sortStatus, refresh]);
 
-  // Handlers for action icons
-  const handleEdit = (id: string) => {
-    console.log(`Edit clicked for ID: ${id}`);
-    // Implement edit functionality
+  const handleEdit = (data: Expenses) => {
+    setAction('Update')
+    setSelectedData(data)
   };
 
   const handleDelete = (id: string) => {
@@ -110,38 +99,30 @@ export default function DataTable({ search, refreshData }: { search: string; ref
       columns={[
         { accessor: '_id', title: 'ID', textAlign: 'left', sortable: true },
         { accessor: 'title', title: 'Title', textAlign: 'left', sortable: true },
-        { accessor: 'amount', title: 'Amount', textAlign: 'left', sortable: true },
         {
-          accessor: 'spent_at',
-          title: 'Spent At',
-          textAlign: 'left',
-          sortable: true,
+          accessor: 'amount', title: 'Amount', textAlign: 'left', sortable: true,
+          render: (record) => `₱ ${record.amount}`,
+        },
+        {
+          accessor: 'spent_at', title: 'Spent At', textAlign: 'left', sortable: true,
           render: (record) => dayjs(record.spent_at).format('MMMM D, YYYY'),
         },
         {
-          accessor: 'updatedAt',
-          title: 'Updated At',
-          textAlign: 'left',
-          sortable: true,
+          accessor: 'updatedAt', title: 'Updated At', textAlign: 'left', sortable: true,
           render: (record) => dayjs(record.updatedAt).format('MMMM D, YYYY'),
         },
         {
-          accessor: 'createdAt',
-          title: 'Created At',
-          textAlign: 'left',
-          sortable: true,
+          accessor: 'createdAt', title: 'Created At', textAlign: 'left', sortable: true,
           render: (record) => dayjs(record.createdAt).format('MMMM D, YYYY'),
         },
         {
-          accessor: 'actions',
-          title: 'Actions',
-          textAlign: 'left',
+          accessor: 'actions', title: 'Actions', textAlign: 'left',
           render: (record) => (
             <div style={{ display: 'flex', justifyContent: 'left', gap: '10px' }}>
               <IconPencil
                 size={20}
                 style={{ cursor: 'pointer', color: '#007bff' }}
-                onClick={() => handleEdit(record._id)}
+                onClick={() => handleEdit(record)}
                 title="Edit"
               />
               <IconTrash

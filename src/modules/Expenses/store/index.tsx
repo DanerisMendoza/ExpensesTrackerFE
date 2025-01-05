@@ -1,11 +1,13 @@
 import { create } from "zustand";
-import { StoreState, DataTableState, Expenses } from "@modules/Expenses/types";
+import { DialogState, DataTableState, Expenses } from "@modules/Expenses/types";
 import { selectedDataVal } from "@src/modules/Expenses/values";
 
-export const DialogStore = create<StoreState>((set) => ({
+export const DialogStore = create<DialogState>((set) => ({
   action: '',
   selectedData: selectedDataVal,
+  loading: false,
 
+  setLoading: (loading) => set({ loading: loading }),
   setSelectedData: (selected_data: Expenses) => set({ selectedData: selected_data }),
   setAction: (action: string) => set({ action: action }),
 }));

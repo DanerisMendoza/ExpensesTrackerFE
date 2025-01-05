@@ -7,7 +7,9 @@ import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 import { selectedDataVal } from "@src/modules/Expenses/values";
 import { useEffect } from "react";
 export default function Dialog() {
-    const { action, setAction, setSelectedData, selectedData } = DialogStore()
+    const {
+        action, selectedData, loading,
+        setAction, setSelectedData, setLoading } = DialogStore()
     const { setRefresh } = DataTableStore()
 
 
@@ -30,6 +32,7 @@ export default function Dialog() {
     });
 
     const onSubmit = async (params: FormData) => {
+        setLoading(true)
         const payload = {
             title: params.title,
             amount: params.amount,
@@ -43,7 +46,10 @@ export default function Dialog() {
                             icon: "success",
                             title: "Success",
                             text: "Expense created successfully!",
+                            timer: 1500, 
+                            showConfirmButton: false, 
                         });
+                        
                         setRefresh(true)
                         setAction('');
                         setSelectedData(selectedDataVal);
@@ -57,6 +63,9 @@ export default function Dialog() {
                         title: "Error",
                         text: message,
                     });
+                })
+                .finally(() => {
+                    setLoading(false)
                 });
         }
         else if (action == 'Update') {
@@ -68,6 +77,8 @@ export default function Dialog() {
                             icon: "success",
                             title: "Success",
                             text: "Expense updated successfully!",
+                            timer: 1500, 
+                            showConfirmButton: false, 
                         });
                         setRefresh(true)
                         setAction('');
@@ -81,6 +92,9 @@ export default function Dialog() {
                         title: "Error",
                         text: message,
                     });
+                })
+                .finally(() => {
+                    setLoading(false)
                 });
         }
     };
@@ -120,7 +134,7 @@ export default function Dialog() {
                         placeholder="Enter Amount"
                         {...form.getInputProps("amount")}
                     />
-                    <Button type="submit" className="border-none bg-blue-300 poppins text-white">
+                    <Button type="submit" className="border-none bg-blue-300 poppins text-white" loading={loading} loaderProps={{ type: 'dots' }}>
                         Submit
                     </Button>
                 </div>

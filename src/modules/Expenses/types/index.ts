@@ -26,12 +26,14 @@ export interface FetchExpensesParams {
 }
 
 
-export interface StoreState {
+export interface DialogState {
     action: string,
     selectedData: Expenses,
+    loading: boolean,
     
     setSelectedData: (action: Expenses) => void;
     setAction: (action: string) => void;
+    setLoading: (loading: boolean) => void;
 }
 
 export interface DataTableState {

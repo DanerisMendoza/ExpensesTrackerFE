@@ -15,50 +15,50 @@ const PAGE_SIZES = [10, 15, 20];
 export default function DataTable() {
 
   const { setAction, setSelectedData } = DialogStore()
-  
+
   const {
-    search, records, totalRecords, page, pageSize, sortStatus, refresh,fetching,
+    search, records, totalRecords, page, pageSize, sortStatus, refresh, fetching,
     setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh, setFetching
   } = DataTableStore();
 
-const fetchData = () => {
-  setFetching(true);
-  axiosInstance
-    .get('getAllExpenses/me', {
-      params: {
-        page,
-        limit: pageSize,
-        search,
-        sortBy: sortStatus.columnAccessor,
-        sortDirection: sortStatus.direction,
-      },
-    })
-    .then((res) => {
-      const { data, totalExpenses } = res.data;
-      if (res.status === 200 && Array.isArray(data)) {
-        setRecords(data);
-        setTotalRecords(totalExpenses);
-      } else {
-        console.error("Unexpected response format:", res.data);
-      }
-    })
-    .catch((error) => {
-      const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
-      console.error("Error fetching data:", error.response || error);
-      Swal.fire({
-        icon: "error",
-        text: message,
+  const fetchData = () => {
+    setFetching(true);
+    axiosInstance
+      .get('getAllExpenses/me', {
+        params: {
+          page,
+          limit: pageSize,
+          search,
+          sortBy: sortStatus.columnAccessor,
+          sortDirection: sortStatus.direction,
+        },
+      })
+      .then((res) => {
+        const { data, totalExpenses } = res.data;
+        if (res.status === 200 && Array.isArray(data)) {
+          setRecords(data);
+          setTotalRecords(totalExpenses);
+        } else {
+          console.error("Unexpected response format:", res.data);
+        }
+      })
+      .catch((error) => {
+        const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
+        console.error("Error fetching data:", error.response || error);
+        Swal.fire({
+          icon: "error",
+          text: message,
+        });
+      })
+      .finally(() => {
+        setFetching(false);
       });
-    })
-    .finally(() => {
-      setFetching(false);
-    });
-};
+  };
 
 
   useEffect(() => {
     fetchData();
-    return(
+    return (
       setRefresh(false)
     )
   }, [page, pageSize, sortStatus, refresh]);
@@ -83,7 +83,13 @@ const fetchData = () => {
           .delete(`deleteExpenseById/${id}`)
           .then((response) => {
             if (response.status === 200) {
-              Swal.fire("Deleted!", response.data.message, "success");
+              Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Expense deleted successfully!",
+                timer: 1500,
+                showConfirmButton: false,
+              });
               fetchData(); // Refresh the data after deletion
             }
           })

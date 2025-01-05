@@ -8,6 +8,7 @@ import { IconPencil, IconTrash } from '@tabler/icons-react';
 import 'mantine-datatable/styles.layer.css';
 import { Expenses } from '@src/modules/Expenses/types';
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
+import { useExpenses } from '@src/modules/Expenses/api/use-expenses';
 
 dayjs.extend(localizedFormat);
 const PAGE_SIZES = [10, 15, 20];
@@ -15,6 +16,8 @@ const PAGE_SIZES = [10, 15, 20];
 export default function DataTable() {
 
   const { setAction, setSelectedData } = DialogStore()
+
+  const { isFetching, isError, data } = useExpenses();
 
   const {
     search, records, totalRecords, page, pageSize, sortStatus, refresh, fetching,
@@ -55,6 +58,10 @@ export default function DataTable() {
       });
   };
 
+  useEffect(() => {
+    console.log('data')
+    console.log(data)
+  }, [])
 
   useEffect(() => {
     fetchData();

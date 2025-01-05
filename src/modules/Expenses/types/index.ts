@@ -42,6 +42,7 @@ export interface DataTableState {
     pageSize: number;
     sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
     refresh: boolean;
+    fetching: boolean;
     
     setSearch: (action: string) => void;
     setRecords: (records: Expenses[]) => void;
@@ -50,4 +51,5 @@ export interface DataTableState {
     setPageSize: (size: number) => void;
     setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
     setRefresh: (refresh: boolean) => void;
+    setFetching: (fetching: boolean) => void;
 }

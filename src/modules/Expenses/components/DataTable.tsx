@@ -17,39 +17,44 @@ export default function DataTable() {
   const { setAction, setSelectedData } = DialogStore()
   
   const {
-    search, records, totalRecords, page, pageSize, sortStatus, refresh,
-    setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh
+    search, records, totalRecords, page, pageSize, sortStatus, refresh,fetching,
+    setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh, setFetching
   } = DataTableStore();
 
-  const fetchData = () => {
-    axiosInstance
-      .get('getAllExpenses/me', {
-        params: {
-          page,
-          limit: pageSize,
-          search,
-          sortBy: sortStatus.columnAccessor,
-          sortDirection: sortStatus.direction,
-        },
-      })
-      .then((res) => {
-        const { data, totalExpenses } = res.data;
-        if (res.status === 200 && Array.isArray(data)) {
-          setRecords(data);
-          setTotalRecords(totalExpenses);
-        } else {
-          console.error("Unexpected response format:", res.data);
-        }
-      })
-      .catch((error) => {
-        const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
-        console.error("Error fetching data:", error.response || error);
-        Swal.fire({
-          icon: "error",
-          text: message,
-        });
+const fetchData = () => {
+  setFetching(true);
+  axiosInstance
+    .get('getAllExpenses/me', {
+      params: {
+        page,
+        limit: pageSize,
+        search,
+        sortBy: sortStatus.columnAccessor,
+        sortDirection: sortStatus.direction,
+      },
+    })
+    .then((res) => {
+      const { data, totalExpenses } = res.data;
+      if (res.status === 200 && Array.isArray(data)) {
+        setRecords(data);
+        setTotalRecords(totalExpenses);
+      } else {
+        console.error("Unexpected response format:", res.data);
+      }
+    })
+    .catch((error) => {
+      const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
+      console.error("Error fetching data:", error.response || error);
+      Swal.fire({
+        icon: "error",
+        text: message,
       });
-  };
+    })
+    .finally(() => {
+      setFetching(false);
+    });
+};
+
 
   useEffect(() => {
     fetchData();
@@ -130,6 +135,11 @@ export default function DataTable() {
       paginationText={({ from, to, totalRecords }) =>
         `Showing data ${from} to ${to} of ${totalRecords} entries`
       }
+      fetching={fetching}
+      loaderType="dots"
+      loaderSize="lg"
+      loaderColor="blue"
+      loaderBackgroundBlur={1}
       className=""
       styles={{
         header: {

@@ -5,10 +5,11 @@ import Dialog from "@src/modules/Expenses/components/Dialog";
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 export const Expenses = () => {
 
-  const { search, setSearch, setRefresh } = DataTableStore()
+  const { search, setSearch, setRefresh, setPage } = DataTableStore()
   const { setAction } = DialogStore()
 
   const handleSearch = () => {
+    setPage(1)
     setRefresh(true)
   };
 

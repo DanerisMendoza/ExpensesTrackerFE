@@ -1,17 +1,18 @@
-
-import { useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@src/api";
-import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
+import {  DataTableStore } from "@src/modules/Expenses/store";
 export const useExpenses = () => {
   const {
-    search, records, totalRecords, page, pageSize, sortStatus, refresh, fetching,
-    setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh, setFetching
+    search,
+    page,
+    pageSize,
+    sortStatus,
   } = DataTableStore();
-  
+
   return useQuery({
-    queryKey: ['expenses'],
+    queryKey: ["expenses"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get('getAllExpenses/me', {
+      const { data } = await axiosInstance.get("getAllExpenses/me", {
         params: {
           page,
           limit: pageSize,
@@ -21,6 +22,7 @@ export const useExpenses = () => {
         },
       });
       return data;
-    }
+    },
+    staleTime: 5 * 60 * 1000, // Data is fresh for 5 minutes
   });
-}
+};

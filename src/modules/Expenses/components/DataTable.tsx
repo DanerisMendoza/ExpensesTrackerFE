@@ -17,58 +17,13 @@ export default function DataTable() {
 
   const { setAction, setSelectedData } = DialogStore()
 
-  const { isFetching, isError, data } = useExpenses();
+  const { isFetching, isError, error, data, refetch } = useExpenses();
 
   const {
-    search, records, totalRecords, page, pageSize, sortStatus, refresh, fetching,
-    setRecords, setTotalRecords, setPage, setPageSize, setSortStatus, setRefresh, setFetching
+    totalRecords, page, pageSize, sortStatus, refresh,
+    setPage, setPageSize, setSortStatus, setRefresh
   } = DataTableStore();
 
-  const fetchData = () => {
-    setFetching(true);
-    axiosInstance
-      .get('getAllExpenses/me', {
-        params: {
-          page,
-          limit: pageSize,
-          search,
-          sortBy: sortStatus.columnAccessor,
-          sortDirection: sortStatus.direction,
-        },
-      })
-      .then((res) => {
-        const { data, totalExpenses } = res.data;
-        if (res.status === 200 && Array.isArray(data)) {
-          setRecords(data);
-          setTotalRecords(totalExpenses);
-        } else {
-          console.error("Unexpected response format:", res.data);
-        }
-      })
-      .catch((error) => {
-        const message = error.response?.data?.error || "Failed to fetch data. Please try again later.";
-        console.error("Error fetching data:", error.response || error);
-        Swal.fire({
-          icon: "error",
-          text: message,
-        });
-      })
-      .finally(() => {
-        setFetching(false);
-      });
-  };
-
-  useEffect(() => {
-    console.log('data')
-    console.log(data)
-  }, [])
-
-  useEffect(() => {
-    fetchData();
-    return (
-      setRefresh(false)
-    )
-  }, [page, pageSize, sortStatus, refresh]);
 
   const handleEdit = (data: Expenses) => {
     setAction('Update')
@@ -97,7 +52,7 @@ export default function DataTable() {
                 timer: 1500,
                 showConfirmButton: false,
               });
-              fetchData(); // Refresh the data after deletion
+              refetch(); // Refresh the data after deletion
             }
           })
           .catch((error) => {
@@ -109,11 +64,21 @@ export default function DataTable() {
     });
   };
 
+  useEffect(() => {
+    refetch();
+    return (
+      setRefresh(false)
+    )
+  }, [page, pageSize, sortStatus, refresh]);
+
+  useEffect(() => {
+    console.log('err: ', error)
+  }, [isError])
 
   return (
     <MantineDataTable
       idAccessor="_id"
-      records={records}
+      records={data}
       columns={[
         { accessor: '_id', title: 'ID', textAlign: 'left', sortable: true },
         { accessor: 'title', title: 'Title', textAlign: 'left', sortable: true },
@@ -148,7 +113,7 @@ export default function DataTable() {
       paginationText={({ from, to, totalRecords }) =>
         `Showing data ${from} to ${to} of ${totalRecords} entries`
       }
-      fetching={fetching}
+      fetching={isFetching}
       loaderType="dots"
       loaderSize="lg"
       loaderColor="blue"

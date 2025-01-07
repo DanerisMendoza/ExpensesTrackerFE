@@ -5,7 +5,7 @@ import "@mantine/core/styles.css";
 import "@src/index.css";
 
 export default function App() {
-  
+
   // url profiler
   let previousUrl = '';
   const observer = new MutationObserver(function () {
@@ -18,8 +18,6 @@ export default function App() {
   observer.observe(document, config);
 
   return (
-    <StrictMode>
-      <RouterProvider router={router} />
-    </StrictMode>
+    <RouterProvider router={router} />
   );
 }

@@ -30,6 +30,16 @@ export default function DataTable() {
     setSelectedData(data)
   };
 
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+  
+  useEffect(() => {
+    console.log(isFetching);
+  }, [isFetching]);
+
+
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
@@ -65,11 +75,13 @@ export default function DataTable() {
   };
 
   useEffect(() => {
-    refetch();
+    if(refresh){
+      refetch();
+    }
     return (
       setRefresh(false)
     )
-  }, [page, pageSize, sortStatus, refresh]);
+  }, [ refresh]);
 
   useEffect(() => {
     console.log('err: ', error)

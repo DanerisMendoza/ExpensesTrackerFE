@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export default () => {
     const { user_details } = GlobalStore();
-    const { topExpenses, isLoading, error } = useAnalytics(user_details.id);
+    const { topExpenses } = useAnalytics(user_details.id);
 
     const barChartData = {
         labels: topExpenses?.map((expense: TopExpenses) => expense.title),

@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, LineElement, Title, Tooltip, Legend
 
 export default () => {
     const { user_details } = GlobalStore();
-    const { monthlyExpenses, isLoading, error } = useAnalytics(user_details.id);
+    const { monthlyExpenses } = useAnalytics(user_details.id);
     const chartData = {
         labels: monthlyExpenses?.map((expense: MonthlyExpenses) => expense._id), // Month and Year (e.g., "2025-01")
         datasets: [

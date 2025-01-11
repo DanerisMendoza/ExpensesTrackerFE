@@ -1,14 +1,14 @@
 import { GlobalStore } from "@src/utils/GlobalStore";
 import { useAnalytics } from "@src/modules/Dashboard/api/index";
 import { Pie } from "react-chartjs-2";  // Import Pie chart from react-chartjs-2
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, layouts } from "chart.js";  // Register necessary components for Pie chart
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";  // Register necessary components for Pie chart
 import { TopExpenses } from "../types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default () => {
     const { user_details } = GlobalStore();
-    const { topExpenses, isLoading, error } = useAnalytics(user_details.id);
+    const { topExpenses } = useAnalytics(user_details.id);
 
     const pieChartData = {
         labels: topExpenses?.map((expense: TopExpenses) => expense.title),

@@ -37,7 +37,7 @@ export const useExpenses = () => {
   };
 
   return useQuery<Expenses[]>({
-    queryKey: ["expenses", { page, pageSize, sortStatus }],
+    queryKey: ["getAllExpenses/me", { page, pageSize, sortStatus }],
     queryFn: fetchData,
     staleTime: 60 * 1000, // Data is fresh for 5 minutes
   });

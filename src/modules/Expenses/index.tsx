@@ -3,14 +3,16 @@ import { IconSearch, IconFileTypePdf, IconFileTypeXls } from '@tabler/icons-reac
 import DataTable from "@src/modules/Expenses/components/DataTable";
 import Dialog from "@src/modules/Expenses/components/Dialog";
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
+import { useQueryClient } from '@tanstack/react-query';
 export const Expenses = () => {
 
-  const { search, setSearch, setRefresh, setPage } = DataTableStore()
+  const { search, setSearch,  setPage } = DataTableStore()
   const { setAction } = DialogStore()
-
+  const queryClient = useQueryClient();
+  
   const handleSearch = () => {
     setPage(1)
-    setRefresh(true)
+    queryClient.refetchQueries({queryKey: ['getAllExpenses/me']});
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {

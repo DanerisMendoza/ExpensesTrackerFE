@@ -3,14 +3,13 @@ import Swal from "sweetalert2";
 import axiosInstance from "@src/api";
 import { useForm } from "@mantine/form";
 import { FormData } from "@src/modules/Expenses/types";
-import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
+import { DialogStore } from "@src/modules/Expenses/store"
 import { selectedDataVal } from "@src/modules/Expenses/values";
 import { useEffect } from "react";
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function Dialog() {
     const { action, selectedData, loading, setAction, setSelectedData, setLoading } = DialogStore()
-    const { setRefresh } = DataTableStore()
     const queryClient = useQueryClient();
 
     const form = useForm({
@@ -51,7 +50,7 @@ export default function Dialog() {
                         });
                         queryClient.refetchQueries({ queryKey: ['topExpenses'] });
                         queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
-                        setRefresh(true)
+                        queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
                         setAction('');
                         setSelectedData(selectedDataVal);
                         form.reset();
@@ -83,7 +82,7 @@ export default function Dialog() {
                         });
                         queryClient.refetchQueries({ queryKey: ['topExpenses'] });
                         queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
-                        setRefresh(true)
+                        queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
                         setAction('');
                         form.reset();
                     }

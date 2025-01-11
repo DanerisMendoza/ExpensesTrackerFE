@@ -43,7 +43,6 @@ export interface DataTableState {
     page: number;
     pageSize: number;
     sortStatus: { columnAccessor: string; direction: 'asc' | 'desc' };
-    refresh: boolean;
     fetching: boolean;
     
     setSearch: (action: string) => void;
@@ -52,6 +51,5 @@ export interface DataTableState {
     setPage: (page: number) => void;
     setPageSize: (size: number) => void;
     setSortStatus: (status: { columnAccessor: string; direction: 'asc' | 'desc' }) => void;
-    setRefresh: (refresh: boolean) => void;
     setFetching: (fetching: boolean) => void;
 }

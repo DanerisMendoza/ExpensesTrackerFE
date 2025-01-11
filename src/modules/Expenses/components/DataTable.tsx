@@ -18,10 +18,10 @@ export default function DataTable() {
 
   const { setAction, setSelectedData } = DialogStore()
   const queryClient = useQueryClient();
-  const { isFetching, isError, error, data, refetch } = useExpenses();
+  const { isFetching, isError, error, data } = useExpenses();
   const {
-    totalRecords, page, pageSize, sortStatus, refresh,
-    setPage, setPageSize, setSortStatus, setRefresh
+    totalRecords, page, pageSize, sortStatus,
+    setPage, setPageSize, setSortStatus, 
   } = DataTableStore();
 
 
@@ -29,16 +29,6 @@ export default function DataTable() {
     setAction('Update')
     setSelectedData(data)
   };
-
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    console.log(isFetching);
-  }, [isFetching]);
-
 
   const handleDelete = (id: string) => {
     Swal.fire({
@@ -64,7 +54,7 @@ export default function DataTable() {
               });
               queryClient.refetchQueries({queryKey: ['topExpenses']});
               queryClient.refetchQueries({queryKey: ['monthlyExpenses']});
-              refetch(); // Refresh the data after deletion
+              queryClient.refetchQueries({queryKey: ['getAllExpenses/me']});
             }
           })
           .catch((error) => {
@@ -76,14 +66,6 @@ export default function DataTable() {
     });
   };
 
-  useEffect(() => {
-    if (refresh) {
-      refetch();
-    }
-    return (
-      setRefresh(false)
-    )
-  }, [refresh]);
 
   useEffect(() => {
     console.log('err: ', error)

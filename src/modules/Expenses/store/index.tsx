@@ -19,7 +19,6 @@ export const DataTableStore = create<DataTableState>((set) => ({
   page: 1,
   pageSize: 20,
   sortStatus: { columnAccessor: 'createdAt', direction: 'desc' },
-  refresh: false,
   fetching: false,
 
   setSearch: (search: string) => set({ search: search }),
@@ -28,7 +27,6 @@ export const DataTableStore = create<DataTableState>((set) => ({
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
   setSortStatus: (status) => set({ sortStatus: status }),
-  setRefresh: (refresh) => set({ refresh: refresh }),
   setFetching: (fetching) => set({ fetching: fetching }),
 }));
 

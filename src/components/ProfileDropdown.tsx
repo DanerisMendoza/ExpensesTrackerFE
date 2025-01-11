@@ -9,8 +9,9 @@ import {
 import avatar from "@assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { GlobalStore, user_details_value } from "@src/utils/GlobalStore";
-
+import { useQueryClient } from '@tanstack/react-query';
 export const ProfileDropdown = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { user_details, is_mobile, set_user_details } = GlobalStore()
   return (
@@ -79,6 +80,7 @@ export const ProfileDropdown = () => {
             <IconLogout style={{ width: rem(20), height: rem(20) }} />
           }
           onClick={() => {
+            queryClient.clear();
             sessionStorage.setItem("accessTokenFlash", '');
             document.cookie = "refreshTokenFlash=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; secure; SameSite=Strict";
             set_user_details(user_details_value)

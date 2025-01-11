@@ -64,7 +64,7 @@ export default function Login() {
         <title>Login</title>
         <div className="w-10/12 sm:w-8/12 md:w-6/12 lg:w-5/12 xl:w-4/12 2xl:w-3/12  absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="flex flex-col gap-4  bg-white p-12 sm:p-16 rounded-lg shadow-md shadow-blue-300 ">
-            <p className=" text-center font-semibold poppins text-2xl">LOGO</p>
+            <p className=" text-center font-semibold poppins text-2xl">Expenses Tracker</p>
             <Text
               size="md"
               className="text-center font-bold poppins mt-6"

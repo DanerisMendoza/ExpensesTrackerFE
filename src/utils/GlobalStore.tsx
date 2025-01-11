@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export interface user_details_type {
+  id: string
   email: string
   name: string
   username: string
@@ -18,6 +19,7 @@ export interface GlobalState {
 }
 
 export const user_details_value = {
+  id: '',
   name: '',
   email: '',
   username: '',

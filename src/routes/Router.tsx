@@ -22,6 +22,7 @@ const isAuthenticated = () => {
   if (Boolean(sessionStorage.getItem("accessTokenFlash"))) {
     const token = sessionStorage.getItem("accessTokenFlash")
     const decodedToken = (token != null ? jwtDecode(token) : user_details_value);
+    console.log(decodedToken)
     if (!user_details.name) {
       set_user_details(decodedToken);
     }

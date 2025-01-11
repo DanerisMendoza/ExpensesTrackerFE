@@ -6,12 +6,12 @@ import { FormData } from "@src/modules/Expenses/types";
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 import { selectedDataVal } from "@src/modules/Expenses/values";
 import { useEffect } from "react";
-export default function Dialog() {
-    const {
-        action, selectedData, loading,
-        setAction, setSelectedData, setLoading } = DialogStore()
-    const { setRefresh } = DataTableStore()
+import { useQueryClient } from '@tanstack/react-query';
 
+export default function Dialog() {
+    const { action, selectedData, loading, setAction, setSelectedData, setLoading } = DialogStore()
+    const { setRefresh } = DataTableStore()
+    const queryClient = useQueryClient();
 
     const form = useForm({
         initialValues: { title: "", amount: 0 },
@@ -46,10 +46,11 @@ export default function Dialog() {
                             icon: "success",
                             title: "Success",
                             text: "Expense created successfully!",
-                            timer: 1500, 
-                            showConfirmButton: false, 
+                            timer: 1500,
+                            showConfirmButton: false,
                         });
-                        
+                        queryClient.refetchQueries({ queryKey: ['topExpenses'] });
+                        queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
                         setRefresh(true)
                         setAction('');
                         setSelectedData(selectedDataVal);
@@ -77,9 +78,11 @@ export default function Dialog() {
                             icon: "success",
                             title: "Success",
                             text: "Expense updated successfully!",
-                            timer: 1500, 
-                            showConfirmButton: false, 
+                            timer: 1500,
+                            showConfirmButton: false,
                         });
+                        queryClient.refetchQueries({ queryKey: ['topExpenses'] });
+                        queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
                         setRefresh(true)
                         setAction('');
                         form.reset();

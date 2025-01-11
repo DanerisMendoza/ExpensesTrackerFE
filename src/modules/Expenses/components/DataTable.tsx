@@ -9,6 +9,7 @@ import 'mantine-datatable/styles.layer.css';
 import { Expenses } from '@src/modules/Expenses/types';
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 import { useExpenses } from '@src/modules/Expenses/api/use-expenses';
+import { useQueryClient } from '@tanstack/react-query';
 
 dayjs.extend(localizedFormat);
 const PAGE_SIZES = [10, 15, 20];
@@ -16,9 +17,8 @@ const PAGE_SIZES = [10, 15, 20];
 export default function DataTable() {
 
   const { setAction, setSelectedData } = DialogStore()
-
+  const queryClient = useQueryClient();
   const { isFetching, isError, error, data, refetch } = useExpenses();
-
   const {
     totalRecords, page, pageSize, sortStatus, refresh,
     setPage, setPageSize, setSortStatus, setRefresh
@@ -34,7 +34,7 @@ export default function DataTable() {
   useEffect(() => {
     console.log(data);
   }, [data]);
-  
+
   useEffect(() => {
     console.log(isFetching);
   }, [isFetching]);
@@ -62,6 +62,8 @@ export default function DataTable() {
                 timer: 1500,
                 showConfirmButton: false,
               });
+              queryClient.refetchQueries({queryKey: ['topExpenses']});
+              queryClient.refetchQueries({queryKey: ['monthlyExpenses']});
               refetch(); // Refresh the data after deletion
             }
           })
@@ -75,13 +77,13 @@ export default function DataTable() {
   };
 
   useEffect(() => {
-    if(refresh){
+    if (refresh) {
       refetch();
     }
     return (
       setRefresh(false)
     )
-  }, [ refresh]);
+  }, [refresh]);
 
   useEffect(() => {
     console.log('err: ', error)

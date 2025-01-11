@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   return (
     <>
-      {!is_mobile ? (<div className="flex h-full ">
+      {!is_mobile ? (<div className="flex h-full bg-white p-4">
         <div className="w-1/2">
           <MonthlyExpenses />
         </div>
@@ -22,7 +22,7 @@ const Dashboard = () => {
           <TopExpensesBar />
         </div>
       </div>) : (
-        <div className="h-full">
+        <div className="h-full bg-white p-4">
           <TopExpensesPie />
         </div>
       )}

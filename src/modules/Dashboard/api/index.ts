@@ -22,7 +22,7 @@ export const useAnalytics = (userId: string) => {
         throw new Error("Failed to fetch average amount");
       }
     },
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    staleTime: 60 * 1000,
   });
 
   const fetchMonthlyExpenses = useQuery<MonthlyExpenses[]>({
@@ -36,13 +36,13 @@ export const useAnalytics = (userId: string) => {
         throw new Error("Failed to fetch monthly expenses");
       }
     },
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    staleTime: 60 * 1000,
   });
 
   const fetchTopExpenses = useQuery<TopExpenses[]>({
     queryKey: ["topExpenses", userId],
     queryFn: async () => {
-      const res = await axiosInstance.get(`analytics/user/${userId}/topExpenses?limit=10`);
+      const res = await axiosInstance.get(`analytics/user/${userId}/topExpenses?limit=5`);
       if (res.status === 200) {
         setTopExpenses(res.data); // Store the result in the AnalyticsStore
         return res.data;
@@ -50,7 +50,7 @@ export const useAnalytics = (userId: string) => {
         throw new Error("Failed to fetch top expenses");
       }
     },
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    staleTime: 60 * 1000,
   });
 
   const fetchTotalAmount = useQuery<TotalAmount>({
@@ -64,7 +64,7 @@ export const useAnalytics = (userId: string) => {
         throw new Error("Failed to fetch total amount");
       }
     },
-    staleTime: 5 * 60 * 1000, // Cache data for 5 minutes
+    staleTime: 60 * 1000,
   });
 
   return {

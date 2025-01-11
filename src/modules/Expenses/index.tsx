@@ -20,7 +20,7 @@ export const Expenses = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-4 h-full">
+    <div className="flex flex-col gap-4 sm:gap-4 h-full bg-white p-4">
 
       <div className='flex flex-col sm:flex-row justify-between gap-4 sm:gap-2'>
         <div className='flex gap-2'>

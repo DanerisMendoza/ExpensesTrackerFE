@@ -21,7 +21,7 @@ export default function DataTable() {
   const { isFetching, isError, error, data } = useExpenses();
   const {
     totalRecords, page, pageSize, sortStatus,
-    setPage, setPageSize, setSortStatus, 
+    setPage, setPageSize, setSortStatus,
   } = DataTableStore();
 
 
@@ -43,7 +43,7 @@ export default function DataTable() {
       if (result.isConfirmed) {
         axiosInstance
           .delete(`deleteExpenseById/${id}`)
-          .then((response) => {
+          .then(async (response) => {
             if (response.status === 200) {
               Swal.fire({
                 icon: "success",
@@ -52,9 +52,9 @@ export default function DataTable() {
                 timer: 1500,
                 showConfirmButton: false,
               });
-              queryClient.refetchQueries({queryKey: ['topExpenses']});
-              queryClient.refetchQueries({queryKey: ['monthlyExpenses']});
-              queryClient.refetchQueries({queryKey: ['getAllExpenses/me']});
+              await queryClient.refetchQueries({ queryKey: ['topExpenses'] });
+              await queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
+              await queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
             }
           })
           .catch((error) => {
@@ -70,6 +70,12 @@ export default function DataTable() {
   useEffect(() => {
     console.log('err: ', error)
   }, [isError])
+
+
+  useEffect(() => {
+    console.log('data: ', data)
+  }, [data])
+
 
   return (
     <MantineDataTable

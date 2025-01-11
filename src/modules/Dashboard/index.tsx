@@ -3,14 +3,10 @@ import MonthlyExpenses from "./components/MonthlyExpenses";
 import TopExpensesBar from "./components/TopExpensesBar";
 import TopExpensesPie from "./components/TopExpensesPie";
 import "chart.js/auto";
-import { useEffect } from "react";
 
 const Dashboard = () => {
 
   const { is_mobile } = GlobalStore()
-  useEffect(() => {
-    console.log(is_mobile)
-  }, [is_mobile])
 
   return (
     <>

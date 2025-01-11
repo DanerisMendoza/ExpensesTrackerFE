@@ -39,7 +39,7 @@ export default function Dialog() {
         if (action == 'New') {
             await axiosInstance
                 .post("createExpenses", payload)
-                .then((response) => {
+                .then(async (response) => {
                     if (response.status === 200) {
                         Swal.fire({
                             icon: "success",
@@ -48,9 +48,9 @@ export default function Dialog() {
                             timer: 1500,
                             showConfirmButton: false,
                         });
-                        queryClient.refetchQueries({ queryKey: ['topExpenses'] });
-                        queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
-                        queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
+                        await queryClient.refetchQueries({ queryKey: ['topExpenses'] });
+                        await queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
+                        await queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
                         setAction('');
                         setSelectedData(selectedDataVal);
                         form.reset();
@@ -71,7 +71,7 @@ export default function Dialog() {
         else if (action == 'Update') {
             await axiosInstance
                 .put(`updateExpenseById/${selectedData._id}`, payload)
-                .then((response) => {
+                .then(async (response) => {
                     if (response.status === 200) {
                         Swal.fire({
                             icon: "success",
@@ -80,9 +80,9 @@ export default function Dialog() {
                             timer: 1500,
                             showConfirmButton: false,
                         });
-                        queryClient.refetchQueries({ queryKey: ['topExpenses'] });
-                        queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
-                        queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
+                        await queryClient.refetchQueries({ queryKey: ['topExpenses'] });
+                        await queryClient.refetchQueries({ queryKey: ['monthlyExpenses'] });
+                        await queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
                         setAction('');
                         form.reset();
                     }
@@ -103,7 +103,6 @@ export default function Dialog() {
 
     useEffect(() => {
         if (action == 'Update') {
-            console.log(selectedData)
             form.setValues({
                 title: selectedData.title,
                 amount: selectedData.amount

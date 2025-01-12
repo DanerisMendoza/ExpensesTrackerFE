@@ -3,16 +3,18 @@ import { IconSearch, IconFileTypePdf, IconFileTypeXls } from '@tabler/icons-reac
 import DataTable from "@src/modules/Expenses/components/DataTable";
 import Dialog from "@src/modules/Expenses/components/Dialog";
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
+import { useExpenses } from '@src/modules/Expenses/api/use-expenses';
 import { useQueryClient } from '@tanstack/react-query';
 export const Expenses = () => {
 
-  const { search, setSearch,  setPage } = DataTableStore()
+  const { data } = useExpenses();
+  const { search, setSearch, setPage } = DataTableStore()
   const { setAction } = DialogStore()
   const queryClient = useQueryClient();
-  
+
   const handleSearch = () => {
     setPage(1)
-    queryClient.refetchQueries({queryKey: ['getAllExpenses/me']});
+    queryClient.refetchQueries({ queryKey: ['getAllExpenses/me'] });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -29,7 +31,9 @@ export const Expenses = () => {
           <Button radius="md" color="blue" onClick={() => setAction('New')}>
             + Add Expenses
           </Button>
-          <Button radius="md" color="green" >
+          <Button radius="md" color="green" onClick={() => {
+            console.log(data)
+          }}>
             <IconFileTypeXls />
           </Button>
           <Button radius="md" color="red" >

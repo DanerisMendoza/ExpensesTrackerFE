@@ -14,19 +14,15 @@ export const DialogStore = create<DialogState>((set) => ({
 
 export const DataTableStore = create<DataTableState>((set) => ({
   search: '',
-  records: [],
   totalRecords: 0,
   page: 1,
   pageSize: 20,
   sortStatus: { columnAccessor: 'createdAt', direction: 'desc' },
-  fetching: false,
 
   setSearch: (search: string) => set({ search: search }),
-  setRecords: (records) => set({ records }),
   setTotalRecords: (total) => set({ totalRecords: total }),
   setPage: (page) => set({ page }),
   setPageSize: (size) => set({ pageSize: size }),
   setSortStatus: (status) => set({ sortStatus: status }),
-  setFetching: (fetching) => set({ fetching: fetching }),
 }));
 

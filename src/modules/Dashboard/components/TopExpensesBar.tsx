@@ -3,12 +3,13 @@ import { useAnalytics } from "@src/modules/Dashboard/api/index";
 import { Bar } from "react-chartjs-2";  
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";  // Chart.js components
 import { TopExpenses } from "@src/modules/Dashboard/types";
+import { PropagateLoader } from "react-spinners"; 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default () => {
     const { user_details } = GlobalStore();
-    const { topExpenses } = useAnalytics(user_details.id);
+    const { topExpenses, isLoading } = useAnalytics(user_details.id);
 
     const barChartData = {
         labels: topExpenses?.map((expense: TopExpenses) => expense.title),
@@ -56,6 +57,12 @@ export default () => {
     };
 
     return (
-        <Bar data={barChartData} options={options} />
+        isLoading ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50%' }}>
+                <PropagateLoader color="#36d7b7" loading={true} size={50} />
+            </div>
+        ) : (
+            <Bar data={barChartData} options={options} />
+        )
     );
 };

@@ -5,6 +5,8 @@ import Dialog from "@src/modules/Expenses/components/Dialog";
 import { DialogStore, DataTableStore } from "@src/modules/Expenses/store"
 import { useExpenses } from '@src/modules/Expenses/api/use-expenses';
 import { useQueryClient } from '@tanstack/react-query';
+import { ExportToExcel } from '@src/utils/ExportToExcel'
+import { ExportToPdf } from '@src/utils/ExportToPdf'
 export const Expenses = () => {
 
   const { data } = useExpenses();
@@ -32,11 +34,21 @@ export const Expenses = () => {
             + Add Expenses
           </Button>
           <Button radius="md" color="green" onClick={() => {
-            console.log(data)
+            if (!data) {
+              console.log('No data available to export.');
+              return;
+            }
+            ExportToExcel(data)
           }}>
             <IconFileTypeXls />
           </Button>
-          <Button radius="md" color="red" >
+          <Button radius="md" color="red" onClick={() => {
+            if (!data) {
+              console.log('No data available to export.');
+              return;
+            }
+            ExportToPdf(data)
+          }}>
             <IconFileTypePdf />
           </Button>
         </div>

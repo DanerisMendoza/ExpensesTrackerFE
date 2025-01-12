@@ -6,6 +6,7 @@ export interface FormData {
 }
 
 export interface Expenses {
+    __v: string;
     _id: string;
     title: string;
     user_id: string;

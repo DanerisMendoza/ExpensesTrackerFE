@@ -1,4 +1,5 @@
 export const selectedDataVal = {
+  __v: '',
   _id: '',
   title: '',
   user_id: '',
